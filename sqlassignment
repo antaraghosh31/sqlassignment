@@ -1,0 +1,54 @@
+Query -1 
+select a.location, r.bikeid, r.subscriber_type, a.name
+from `project-antara.austin_bikeshare.bikeshare_stations` as a, `project-antara.austin_bikeshare.bikeshare_trips` as r
+where a.station_id=r.start_station_id
+Order by bikeid DESC 
+limit 10;
+Query -2 Inner Join
+
+
+select bikeid, duration_minutes, subscriber_type
+from `project-antara.austin_bikeshare.bikeshare_trips` t1
+Inner JOIN `project-antara.austin_bikeshare.bikeshare_stations` t2
+on t1.start_station_id = t2.station_id
+where start_station_id > 3000 and start_station_id < 4000
+order by duration_minutes desc
+limit 10;
+
+Query-3 Cross Join
+
+select *
+from `project-antara.austin_bikeshare.bikeshare_trips` t1
+CROSS JOIN `project-antara.austin_bikeshare.bikeshare_stations` t2
+where start_station_id = 3464
+order by duration_minutes desc
+limit 10;
+
+Query -4 Join
+
+select duration_minutes, subscriber_type, start_station_id, end_station_id
+from `project-antara.austin_bikeshare.bikeshare_trips` t1
+JOIN `project-antara.austin_bikeshare.bikeshare_stations` t2
+on t1.start_station_name = t2.name
+where start_station_id > 2000 and start_station_id < 3000
+order by duration_minutes desc
+limit 5;
+
+Query - 5 
+
+select avg(duration_minutes) from `project-antara.austin_bikeshare.bikeshare_trips`
+where subscriber_type = "Walk Up" and start_station_id between 3000 and 4000;
+
+Query - 6
+
+select subscriber_type, avg(duration_minutes)
+from `project-antara.austin_bikeshare.bikeshare_trips`
+where start_station_id between 3000 and 4000
+group BY subscriber_type;
+
+Query - 7
+
+select count(*) from `project-antara.austin_bikeshare.bikeshare_trips`
+where start_station_id 
+in ( select start_station_id from `project-antara.austin_bikeshare.bikeshare_trips`
+group by start_station_id having count(*)> 50000);
